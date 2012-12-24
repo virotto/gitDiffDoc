@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 
 import commands
+import cgi
 
 class DiffInfo:
 	def __init__(self):
@@ -50,7 +51,7 @@ commands.getoutput('cp -rf ./gitDiffDoc/after/* ./gitDiffDoc/before/')
 #make before
 for info in diffInfos:
 	if info.newFile != ".dev/null":
-		commands.getoutput('git show HEAD:' + info.newFile + ' > ./gitDiffDoc/before/' + info.newFile)
+		commands.getoutput('git show HEAD:' + info.newFile[2:] + ' > ./gitDiffDoc/before/' + info.newFile)
 	if info.oldFile == ".dev/null":
 		commands.getoutput('rm ./gitDiffDoc/before/' + info.newFile)
 		
@@ -60,15 +61,17 @@ xmlOutput += xmlText1
 count = 0
 for info in diffInfos:
 	if info.oldFile == ".dev/null":
-		xmlOutput += '   <Row>    <Cell ss:Index="2" ss:StyleID="s18"><Data ss:Type="String">' + info.newFile + '</Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String"></Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String">' + info.alteration +'</Data></Cell>   </Row>'
+		
+		xmlOutput += '   <Row>    <Cell ss:Index="2" ss:StyleID="s18"><Data ss:Type="String">' + cgi.escape(info.newFile) + '</Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String"></Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String">' + '' +'</Data></Cell>   </Row>'
 		count += 1
+		
 
 #delete file
 xmlOutput += '<Row ss:Index="' + str(6+count) + '">'
 xmlOutput += xmlText2
 for info in diffInfos:
 	if info.newFile == ".dev/null":
-		xmlOutput += '   <Row>    <Cell ss:Index="2" ss:StyleID="s18"><Data ss:Type="String">' + info.oldFile + '</Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String"></Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String">' + info.alteration +'</Data></Cell>   </Row>'
+		xmlOutput += '   <Row>    <Cell ss:Index="2" ss:StyleID="s18"><Data ss:Type="String">' + cgi.escape(info.oldFile) + '</Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String"></Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String">' + '' +'</Data></Cell>   </Row>'
 		count += 1
 
 #modify file
@@ -76,8 +79,9 @@ xmlOutput += '<Row ss:Index="' + str(8+count) + '">'
 xmlOutput += xmlText3
 for info in diffInfos:
 	if info.oldFile != ".dev/null" and info.newFile != ".dev/null":
-		xmlOutput += '   <Row>    <Cell ss:Index="2" ss:StyleID="s18"><Data ss:Type="String">' + info.newFile + '</Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String"></Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String">' + info.alteration +'</Data></Cell>   </Row>'
+		xmlOutput += '   <Row>    <Cell ss:Index="2" ss:StyleID="s18"><Data ss:Type="String">' + cgi.escape(info.newFile) + '</Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String"></Data></Cell>    <Cell ss:StyleID="s18"><Data ss:Type="String">' + '' +'</Data></Cell>   </Row>'
 		count += 1
+		
 
 xmlOutput += xmlText4
 
