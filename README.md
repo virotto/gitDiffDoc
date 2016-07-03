@@ -1,7 +1,7 @@
 gitDiffDoc　β
 ==========
 
-make a git diff document
+create the before files and after files by git diff
 
 <h3>概要</h3>
   git diff コマンドを使用し、修正前後のソースコードを取得します。
